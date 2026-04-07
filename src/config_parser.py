@@ -1,25 +1,20 @@
-import os
-
-
-def config_parser(filename: str) -> None:
-
-    k_required = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"]
-
-    if not os.path.exists(filename):
-        raise FileNotFoundError(f"Fichier introuvable : {filename}")
+def parse_config(filename: str) -> dict: 
+    dict_file = {}
 
     with open(filename, "r") as f:
-        line = f.read()
-        for key in k_required:
-            if key not in line:
-                raise KeyError(f"Error {key} key not found in {filename}")
-        else:
-            print("All good")
+        for line in f:
+            if line.strip() == "":
+                continue
+            key, value = line.split("=")
+            dict_file[key] = value.strip()
+    return dict_file
 
+def verify_dict(dict_file: dict) -> bool:
+    required = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"]
 
-def main() -> None:
-    config_parser("config.txt")
-
-
-if __name__ == "__main__":
-    main()
+    for word in required:
+        if not word in dict_file.keys():
+            return False
+        if not dict_file[word]:
+            return False
+    return True
