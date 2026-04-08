@@ -1,9 +1,9 @@
-import sys
-sys.path.append("src")
+from src.config_parser import parse_config, verify_dict
+from src.maze_display import display_maze
+from src.maze_generator import generate, open_cell, create_grid
 
-from config_parser import parse_config, verify_dict
-from maze_display import create_grid
-from maze_generator import remove_wall
+
+N, E, S, W = 1, 2, 4, 8
 
 
 def main() -> None:
@@ -16,6 +16,33 @@ def main() -> None:
         height = int(dict["HEIGHT"])
 
         grid = create_grid(width, height)
-        remove_wall(grid)
 
-main()
+        for line in grid:
+            for cell in line:
+                print(f"{cell:x}", end=" ")
+            print()
+
+        value = dict["ENTRY"]
+        x_, y_ = value.split(",")
+        x_start, y_start = int(x_), int(y_)
+        grid = open_cell(grid, x_start, y_start, width, height)
+        grid = generate(grid, width, height, x_start, y_start)
+
+        exit = dict["EXIT"]
+        x_, y_ = exit.split(",")
+        xe, ye = int(x_), int(y_)
+
+        open_cell(grid, xe, ye, width, height)
+
+        print()
+        print("-" * (width * 2), "\n")
+
+        display_maze(grid, width, height)
+        for line in grid:
+            for cell in line:
+                print(f"{cell:x}", end=" ")
+            print()
+
+
+if __name__ == "__main__":
+    main()

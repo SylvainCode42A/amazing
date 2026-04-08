@@ -15,7 +15,10 @@ a-maze-ing/
 │
 └── mazegen-1.0.0/         # le package pip (plus tard)
 
-
+1         # 0001
+1 << 1    # 0010  (décalé d'un cran à gauche)
+1 << 2    # 0100  (décalé de deux crans à gauche)
+1 << 3    # 1000  (décalé de trois crans à gauche)
 
 Bit    Position     Direction
 0         LSB          Nord
@@ -25,7 +28,7 @@ Bit    Position     Direction
 
 4 combinaisons de 4 chiffres soit 0 ou 1
 
-0b111 = 0xF = 15 = f
+0b1111 = 0xF = 15 = f
 
 
 config.txt
@@ -41,7 +44,3 @@ tu écris la grille dans OUTPUT_FILE
 tu affiches le labyrinthe à l'écran
 
 
-1         # 0001
-1 << 1    # 0010  (décalé d'un cran à gauche)
-1 << 2    # 0100  (décalé de deux crans à gauche)
-1 << 3    # 1000  (décalé de trois crans à gauche)
