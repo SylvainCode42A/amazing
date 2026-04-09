@@ -1,6 +1,8 @@
 from src.config_parser import parse_config, verify_dict
 from src.maze_display import display_maze
 from src.maze_generator import generate, open_cell, create_grid
+from src.maze_solver import find_exit
+from src.maze_writer import write_maze
 
 
 N, E, S, W = 1, 2, 4, 8
@@ -17,11 +19,6 @@ def main() -> None:
 
         grid = create_grid(width, height)
 
-        for line in grid:
-            for cell in line:
-                print(f"{cell:x}", end=" ")
-            print()
-
         value = dict["ENTRY"]
         x_, y_ = value.split(",")
         x_start, y_start = int(x_), int(y_)
@@ -30,18 +27,19 @@ def main() -> None:
 
         exit = dict["EXIT"]
         x_, y_ = exit.split(",")
-        xe, ye = int(x_), int(y_)
+        x_exit, y_exit = int(x_), int(y_)
 
-        open_cell(grid, xe, ye, width, height)
+        open_cell(grid, x_exit, y_exit, width, height)
 
-        print()
-        print("-" * (width * 2), "\n")
+        print("\n")
 
-        display_maze(grid, width, height)
-        for line in grid:
-            for cell in line:
-                print(f"{cell:x}", end=" ")
-            print()
+        path, direction = find_exit(
+            grid, width, height, (x_start, y_start), (x_exit, y_exit))
+        display_maze(grid, (x_start, y_start), (x_exit, y_exit), path)
+        write_maze(
+            grid, (x_start, y_start), (x_exit, y_exit), direction, 'maze.txt')
+
+        print("\n")
 
 
 if __name__ == "__main__":
