@@ -2,13 +2,13 @@ def display_maze(
     maze: list[list],
     entry: tuple[int, int],
     exit_pos: tuple[int, int],
-    path: list[tuple[int, int]]
+    path: list[tuple[int, int]],
+    forbidden: set
 ) -> None:
     H, W = len(maze), len(maze[0])
     NORTH, EAST, SOUTH, WEST = 0b0001, 0b0010, 0b0100, 0b1000
 
     lines = []
-    print(path)
 
     for row in range(H):
         top = ''
@@ -27,6 +27,8 @@ def display_maze(
                 mid += ' X '
             elif (col, row) in path:
                 mid += ' . '
+            elif (col, row) in forbidden:
+                mid += ' # '
             else:
                 mid += '   '
         mid += '|' if (maze[row][W - 1] & EAST) else ' '

@@ -4,9 +4,38 @@ import random
 N, E, S, W = 1, 2, 4, 8
 
 
-def create_grid(width: int, height: int) -> list[list]:
+def create_grid(width: int, height: int) -> list[list] | None:
     grid = [[0xF] * width for _ in range(height)]
-    return grid
+    forbidden = set()
+
+    if width < 9 or height < 7:
+        return grid, forbidden
+    else:
+        x_center, y_center = width // 2, height // 2
+
+        forbidden.add((x_center - 1, y_center))
+        forbidden.add((x_center - 2, y_center))
+        forbidden.add((x_center - 3, y_center))
+        forbidden.add((x_center - 1, y_center - 2))
+        forbidden.add((x_center - 3, y_center - 1))
+        forbidden.add((x_center - 3, y_center - 2))
+        forbidden.add((x_center - 1, y_center - 1))
+        forbidden.add((x_center - 1, y_center + 1))
+        forbidden.add((x_center - 1, y_center + 2))
+
+        forbidden.add((x_center + 1, y_center))
+        forbidden.add((x_center + 1, y_center - 2))
+        forbidden.add((x_center + 2, y_center))
+        forbidden.add((x_center + 3, y_center))
+        forbidden.add((x_center + 3, y_center - 1))
+        forbidden.add((x_center + 3, y_center - 2))
+        forbidden.add((x_center + 2, y_center - 2))
+        forbidden.add((x_center + 1, y_center + 1))
+        forbidden.add((x_center + 1, y_center + 2))
+        forbidden.add((x_center + 2, y_center + 2))
+        forbidden.add((x_center + 3, y_center + 2))
+
+    return grid, forbidden
 
 
 def remove_wall(grid: list[list], x1: int, y1: int, x2: int, y2: int):
@@ -32,21 +61,37 @@ def remove_wall(grid: list[list], x1: int, y1: int, x2: int, y2: int):
 
 
 def get_neighbors(
-        x: int, y: int, width: int, height: int, visited: set
+        x: int, y: int, width: int, height: int, visited: set, forbidden: set
         ) -> dict:
 
     neighbors = []
 
-    if (0 <= y + 1 < height) and (x, y + 1) not in visited:
+    if (
+        (0 <= y + 1 < height)
+        and (x, y + 1) not in visited
+        and (x, y + 1) not in forbidden
+    ):
         neighbors.append((x, y + 1))
 
-    if (0 <= x + 1 < width) and (x + 1, y) not in visited:
+    if (
+        (0 <= x + 1 < width)
+        and (x + 1, y) not in visited
+        and (x + 1, y) not in forbidden
+    ):
         neighbors.append((x + 1, y))
 
-    if (0 <= y - 1 < height) and (x, y - 1) not in visited:
+    if (
+        (0 <= y - 1 < height)
+        and (x, y - 1) not in visited
+        and (x, y - 1) not in forbidden
+    ):
         neighbors.append((x, y - 1))
 
-    if (0 <= x - 1 < width) and (x - 1, y) not in visited:
+    if (
+        (0 <= x - 1 < width)
+        and (x - 1, y) not in visited
+        and (x - 1, y) not in forbidden
+    ):
         neighbors.append((x - 1, y))
 
     return neighbors
@@ -72,7 +117,12 @@ def open_cell(
 
 
 def generate(
-        grid: list[list], width: int, height: int, start_x: int, start_y: int
+        grid: list[list],
+        width: int,
+        height: int,
+        start_x: int,
+        start_y: int,
+        forbidden: set
         ) -> list[list]:
 
     visited = set()
@@ -86,9 +136,10 @@ def generate(
 
     while stack:
 
-        if get_neighbors(x1, y1, width, height, visited):
+        if get_neighbors(x1, y1, width, height, visited, forbidden):
+
             (x2, y2) = random.choice(
-                get_neighbors(x1, y1, width, height, visited)
+                get_neighbors(x1, y1, width, height, visited, forbidden)
             )
             remove_wall(grid, x1, y1, x2, y2)
             stack.append((x2, y2))

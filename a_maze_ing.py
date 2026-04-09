@@ -17,13 +17,13 @@ def main() -> None:
         width = int(dict["WIDTH"])
         height = int(dict["HEIGHT"])
 
-        grid = create_grid(width, height)
+        grid, forbidden = create_grid(width, height)
 
         value = dict["ENTRY"]
         x_, y_ = value.split(",")
         x_start, y_start = int(x_), int(y_)
         grid = open_cell(grid, x_start, y_start, width, height)
-        grid = generate(grid, width, height, x_start, y_start)
+        grid = generate(grid, width, height, x_start, y_start, forbidden)
 
         exit = dict["EXIT"]
         x_, y_ = exit.split(",")
@@ -35,9 +35,14 @@ def main() -> None:
 
         path, direction = find_exit(
             grid, width, height, (x_start, y_start), (x_exit, y_exit))
-        display_maze(grid, (x_start, y_start), (x_exit, y_exit), path)
+        display_maze(
+            grid, (x_start, y_start), (x_exit, y_exit), path, forbidden)
         write_maze(
-            grid, (x_start, y_start), (x_exit, y_exit), direction, 'maze.txt')
+            grid,
+            (x_start, y_start),
+            (x_exit, y_exit),
+            direction,
+            dict["OUTPUT_FILE"])
 
         print("\n")
 
