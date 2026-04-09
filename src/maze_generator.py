@@ -5,6 +5,7 @@ N, E, S, W = 1, 2, 4, 8
 
 
 def create_grid(width: int, height: int) -> list[list] | None:
+
     grid = [[0xF] * width for _ in range(height)]
     forbidden = set()
 
@@ -61,7 +62,12 @@ def remove_wall(grid: list[list], x1: int, y1: int, x2: int, y2: int):
 
 
 def get_neighbors(
-        x: int, y: int, width: int, height: int, visited: set, forbidden: set
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        visited: set,
+        forbidden: set
         ) -> dict:
 
     neighbors = []
@@ -122,7 +128,8 @@ def generate(
         height: int,
         start_x: int,
         start_y: int,
-        forbidden: set
+        forbidden: set,
+        seed: int | None = None
         ) -> list[list]:
 
     visited = set()
@@ -130,6 +137,9 @@ def generate(
 
     x1 = int(start_x)
     y1 = int(start_y)
+
+    if seed is not None:
+        random.seed(seed)
 
     visited.add((x1, y1))
     stack.append((x1, y1))
