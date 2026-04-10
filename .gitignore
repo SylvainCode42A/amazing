@@ -1,1 +1,11 @@
-src/__pycache__/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+
+venv/
+.venv/
+
+build/
+*.egg-info/
+
+maze.txt
