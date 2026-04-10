@@ -162,3 +162,24 @@ def generate(
                 (x1, y1) = stack[-1]
 
     return grid
+
+
+def make_imperfect(
+        grid: list[list],
+        width: int,
+        height: int,
+        seed: int | None = None
+        ) -> list[list]:
+
+    random.seed(seed)
+
+    break_wall = (width * height) // 10
+
+    for _ in range(break_wall):
+        x = random.randint(0, width - 2)
+        y = random.randint(0, height - 1)
+
+        grid[y][x] &= ~2
+        grid[y][x + 1] &= ~8
+
+    return grid

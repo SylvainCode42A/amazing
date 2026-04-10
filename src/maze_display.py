@@ -24,13 +24,17 @@ def display_maze(
         top = ''
         for col in range(W):
             top += COLORS[0] + '+'
-            top += COLORS[color] + '---' if (maze[row][col] & NORTH) else COLORS[0] + '   '
+            top += (COLORS[color] + '---'
+                    if (maze[row][col] & NORTH)
+                    else COLORS[0] + '   ')
         top += COLORS[0] + '+'
         lines.append(top)
 
         mid = COLORS[0] + ''
         for col in range(W):
-            mid += COLORS[color] + '|' if (maze[row][col] & WEST) else COLORS[0] + ' '
+            mid += (COLORS[color] + '|'
+                    if (maze[row][col] & WEST)
+                    else COLORS[0] + ' ')
             if (col, row) == entry:
                 mid += COLORS[0] + ' E '
             elif (col, row) == exit_pos:
@@ -41,13 +45,17 @@ def display_maze(
                 mid += COLORS[0] + ' # '
             else:
                 mid += COLORS[0] + '   '
-        mid += COLORS[color] + '|' if (maze[row][W - 1] & EAST) else COLORS[0] + ' '
+        mid += (COLORS[color] + '|'
+                if (maze[row][W - 1] & EAST)
+                else COLORS[0] + ' ')
         lines.append(mid)
 
     bot = COLORS[0] + ''
     for col in range(W):
         bot += COLORS[0] + '+'
-        bot += COLORS[color] + '---' if (maze[H - 1][col] & SOUTH) else COLORS[0] + '   '
+        bot += (COLORS[color] + '---'
+                if (maze[H - 1][col] & SOUTH)
+                else COLORS[0] + '   ')
     bot += COLORS[0] + '+'
     lines.append(bot)
 
