@@ -4,7 +4,7 @@ def display_maze(
     exit_pos: tuple[int, int],
     path: list[tuple[int, int]],
     forbidden: set,
-    color: int
+    color: int,
 ) -> None:
 
     COLORS = [
@@ -58,5 +58,9 @@ def display_maze(
                 else COLORS[0] + '   ')
     bot += COLORS[0] + '+'
     lines.append(bot)
+
+    if not forbidden:
+        print("Warning: maze too small for '42' "
+              "pattern.")
 
     print('\n'.join(lines))

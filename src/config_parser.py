@@ -5,9 +5,9 @@ def parse_config(filename: str) -> dict:
     try:
         with open(filename, "r") as f:
             for line in f:
-                if line.strip() == "":
+                if line.strip() == "" or line.strip().startswith("#"):
                     continue
-                key, value = line.split("=")
+                key, value = line.split("=", 1)
                 dict_file[key] = value.strip()
     except FileNotFoundError:
         raise FileNotFoundError("Sorry, config.txt not found")

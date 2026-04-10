@@ -4,6 +4,7 @@ from src.maze_generator import generate, open_cell, create_grid, make_imperfect
 from src.maze_solver import find_exit
 from src.maze_writer import write_maze
 import readchar
+import sys
 
 
 N, E, S, W = 1, 2, 4, 8
@@ -11,49 +12,44 @@ N, E, S, W = 1, 2, 4, 8
 
 def main() -> None:
     try:
-        dict = parse_config("config.txt")
+        if len(sys.argv) != 2:
+            print("Usage: python3 a_maze_ing.py config.txt")
+            return
+        config = parse_config(sys.argv[1])
     except Exception as e:
         print(e)
         return
 
     try:
-        verify_dict(dict)
+        verify_dict(config)
     except Exception as e:
         print(e)
         return
 
-    width = int(dict["WIDTH"])
-    height = int(dict["HEIGHT"])
+    width = int(config["WIDTH"])
+    height = int(config["HEIGHT"])
+
+    if width <= 1 or height <= 1:
+        print("Too small only one cell")
+        return
 
     grid, forbidden = create_grid(width, height)
 
-    value = dict["ENTRY"]
+    value = config["ENTRY"]
     x_, y_ = value.split(",")
     x_start, y_start = int(x_), int(y_)
-    open_cell(
-        grid,
-        x_start,
-        y_start,
-        width,
-        height
-        )
 
-    if "SEED" in dict:
-        seed = int(dict["SEED"])
+    if "SEED" in config:
+        try:
+            seed = int(config["SEED"])
+        except ValueError:
+            seed = None
     else:
         seed = None
 
-    exit = dict["EXIT"]
-    x_, y_ = exit.split(",")
+    exit_coord = config["EXIT"]
+    x_, y_ = exit_coord.split(",")
     x_exit, y_exit = int(x_), int(y_)
-
-    open_cell(
-        grid,
-        x_exit,
-        y_exit,
-        width,
-        height
-        )
 
     grid = generate(
                 grid,
@@ -65,7 +61,23 @@ def main() -> None:
                 seed
                 )
 
-    if dict["PERFECT"] == "False":
+    open_cell(
+        grid,
+        x_start,
+        y_start,
+        width,
+        height
+        )
+
+    open_cell(
+        grid,
+        x_exit,
+        y_exit,
+        width,
+        height
+        )
+
+    if config["PERFECT"] == "False":
         grid = make_imperfect(
             grid,
             width,
@@ -86,7 +98,7 @@ def main() -> None:
         (x_start, y_start),
         (x_exit, y_exit),
         direction,
-        dict["OUTPUT_FILE"]
+        config["OUTPUT_FILE"]
         )
 
     show_path = False
@@ -118,18 +130,6 @@ def main() -> None:
             elif key == 'r':
 
                 grid, forbidden = create_grid(width, height)
-                open_cell(
-                    grid,
-                    x_start,
-                    y_start,
-                    width,
-                    height
-                    )
-
-                if "SEED" in dict:
-                    seed = int(dict["SEED"])
-                else:
-                    seed = None
 
                 grid = generate(
                     grid,
@@ -143,13 +143,21 @@ def main() -> None:
 
                 open_cell(
                     grid,
+                    x_start,
+                    y_start,
+                    width,
+                    height
+                    )
+
+                open_cell(
+                    grid,
                     x_exit,
                     y_exit,
                     width,
                     height
                     )
 
-                if dict["PERFECT"] == "False":
+                if config["PERFECT"] == "False":
                     grid = make_imperfect(
                         grid,
                         width,
@@ -170,7 +178,7 @@ def main() -> None:
                     (x_start, y_start),
                     (x_exit, y_exit),
                     direction,
-                    dict["OUTPUT_FILE"]
+                    config["OUTPUT_FILE"]
                     )
 
             elif key == 'c':
