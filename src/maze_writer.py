@@ -1,5 +1,5 @@
 def write_maze(
-    grid: list[list],
+    grid: list[list[int]],
     entry: tuple[int, int],
     exit_pos: tuple[int, int],
     direction: list[str],

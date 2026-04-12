@@ -1,6 +1,6 @@
-def parse_config(filename: str) -> dict:
+def parse_config(filename: str) -> dict[str, str]:
 
-    dict_file = {}
+    dict_file: dict[str, str] = {}
 
     try:
         with open(filename, "r") as f:
@@ -15,7 +15,7 @@ def parse_config(filename: str) -> dict:
     return dict_file
 
 
-def verify_dict(dict_file: dict) -> bool:
+def verify_dict(dict_file: dict[str, str]) -> bool:
 
     required = ["WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"]
 

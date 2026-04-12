@@ -2,14 +2,14 @@ N, E, S, W = 1, 2, 4, 8
 
 
 def choices_to_go(
-        grid: list[list],
+        grid: list[list[int]],
         x: int,
         y: int,
         height: int,
         width: int
-        ) -> dict[str, tuple]:
+        ) -> dict[str, tuple[int, int]]:
 
-    choices = {}
+    choices: dict[str, tuple[int, int]] = {}
 
     if x + 1 < width and not (grid[y][x] & E):
         choices["right"] = (x + 1, y)
@@ -27,15 +27,15 @@ def choices_to_go(
 
 
 def find_exit(
-        grid: list[list],
+        grid: list[list[int]],
         width: int,
         height: int,
-        start: int,
-        end: int
-        ) -> list[tuple]:
+        start: tuple[int, int],
+        end: tuple[int, int]
+        ) -> tuple[list[tuple[int, int]], list[str]]:
 
-    queue = [start]
-    came_from = {start: None}
+    queue: list[tuple[int, int]] = [start]
+    came_from: dict[tuple[int, int], tuple[int, int] | None] = {start: None}
 
     while queue:
         x, y = queue.pop(0)
@@ -48,15 +48,16 @@ def find_exit(
                 came_from[(x2, y2)] = (x, y)
                 queue.append((x2, y2))
 
-    path = []
-    current = end
+    path: list[tuple[int, int]] = []
+    current: tuple[int, int] | None = end
 
     while current is not None:
         path.append(current)
         current = came_from.get(current)
+
     path.reverse()
 
-    direction = []
+    direction: list[str] = []
     for i in range(len(path) - 1):
         x1, y1 = path[i]
         x2, y2 = path[i + 1]

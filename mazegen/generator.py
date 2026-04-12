@@ -17,8 +17,8 @@ class MazeGenerator():
         self.end = end if end else (width - 1, height - 1)
         self.seed = seed
         self.grid, self.forbidden = create_grid(width, height)
-        self.path = []
-        self.direction = []
+        self.path: list[tuple[int, int]] = []
+        self.direction: list[str] = []
         x_start, y_start = self.start
         x_exit, y_exit = self.end
         self.grid = generate(
@@ -40,8 +40,8 @@ class MazeGenerator():
                     (x_exit, y_exit)
                     )
 
-    def get_grid(self):
+    def get_grid(self) -> list[list[int]]:
         return self.grid
 
-    def get_path(self):
+    def get_path(self) -> list[tuple[int, int]]:
         return self.path

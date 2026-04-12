@@ -3,7 +3,7 @@ from src.maze_display import display_maze
 from src.maze_generator import generate, open_cell, create_grid, make_imperfect
 from src.maze_solver import find_exit
 from src.maze_writer import write_maze
-import readchar
+import readchar  # type: ignore
 import sys
 
 

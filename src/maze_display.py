@@ -1,9 +1,9 @@
 def display_maze(
-    maze: list[list],
+    maze: list[list[int]],
     entry: tuple[int, int],
     exit_pos: tuple[int, int],
     path: list[tuple[int, int]],
-    forbidden: set,
+    forbidden: set[tuple[int, int]],
     color: int,
 ) -> None:
 
