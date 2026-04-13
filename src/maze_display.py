@@ -6,6 +6,19 @@ def display_maze(
     forbidden: set[tuple[int, int]],
     color: int,
 ) -> None:
+    """Render the maze in the terminal using ASCII characters.
+
+    Walls are drawn with '+', '-', '|'. The entry is marked 'E',
+    the exit 'X', path cells '.', and forbidden cells '#'.
+
+    Args:
+        maze: 2D list of integers encoding walls per cell.
+        entry: (x, y) coordinates of the entry cell.
+        exit_pos: (x, y) coordinates of the exit cell.
+        path: List of (x, y) cells to highlight as the solution path.
+        forbidden: Set of (x, y) cells reserved for the '42' pattern.
+        color: Index into the COLORS list for wall rendering.
+    """
 
     COLORS = [
         "\033[0m",   # blanc
@@ -58,9 +71,5 @@ def display_maze(
                 else COLORS[0] + '   ')
     bot += COLORS[0] + '+'
     lines.append(bot)
-
-    if not forbidden:
-        print("Warning: maze too small for '42' "
-              "pattern.")
 
     print('\n'.join(lines))

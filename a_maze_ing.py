@@ -3,7 +3,7 @@ from src.maze_display import display_maze
 from src.maze_generator import generate, open_cell, create_grid, make_imperfect
 from src.maze_solver import find_exit
 from src.maze_writer import write_maze
-import readchar  # type: ignore
+import readchar
 import sys
 
 
@@ -11,6 +11,17 @@ N, E, S, W = 1, 2, 4, 8
 
 
 def main() -> None:
+    """Entry point of the maze generator program.
+
+    Parses the configuration file, generates the maze, writes it to the
+    output file, and starts an interactive terminal display loop.
+
+    Controls:
+        p: Show or hide the shortest path.
+        r: Regenerate a new maze with the same configuration.
+        c: Cycle through wall colours.
+        q: Quit the program.
+    """
     try:
         if len(sys.argv) != 2:
             print("Usage: python3 a_maze_ing.py config.txt")
@@ -35,9 +46,19 @@ def main() -> None:
 
     grid, forbidden = create_grid(width, height)
 
+    if not forbidden:
+        print("Warning: maze too small for '42' pattern.")
+
     value = config["ENTRY"]
     x_, y_ = value.split(",")
     x_start, y_start = int(x_), int(y_)
+
+    if not (x_start == 0
+            or x_start == width - 1
+            or y_start == 0
+            or y_start == height - 1):
+        print("Error: ENTRY must be on the border of the maze.")
+        return
 
     if "SEED" in config:
         try:
@@ -50,6 +71,13 @@ def main() -> None:
     exit_coord = config["EXIT"]
     x_, y_ = exit_coord.split(",")
     x_exit, y_exit = int(x_), int(y_)
+
+    if not (x_exit == 0
+            or x_exit == width - 1
+            or y_exit == 0
+            or y_exit == height - 1):
+        print("Error: EXIT must be on the border of the maze.")
+        return
 
     grid = generate(
                 grid,
@@ -82,6 +110,7 @@ def main() -> None:
             grid,
             width,
             height,
+            forbidden,
             seed
             )
 
@@ -162,6 +191,7 @@ def main() -> None:
                         grid,
                         width,
                         height,
+                        forbidden,
                         seed
                         )
 

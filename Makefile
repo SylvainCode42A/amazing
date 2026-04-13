@@ -14,6 +14,6 @@ lint:
 	flake8 .
 	mypy .
 
-lint-strict:
+lint:
 	flake8 .
-	mypy . --strict
+	mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs

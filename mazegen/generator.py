@@ -3,6 +3,25 @@ from src.maze_solver import find_exit
 
 
 class MazeGenerator():
+    """Standalone maze generator usable as a pip-installable module.
+
+    Generates a perfect maze using a randomized DFS backtracker.
+    Provides access to the grid structure and the shortest solution path.
+
+    Example:
+        maze = MazeGenerator(height=10, width=10)
+        grid = maze.get_grid()
+        path = maze.get_path()
+
+    Args:
+        height: Number of rows in the maze.
+        width: Number of columns in the maze.
+        start: (x, y) coordinates of the entry cell. Defaults to (0, 0).
+        end: (x, y) coordinates of the exit cell.
+            Defaults to (width - 1, height - 1).
+        seed: Integer seed for reproducible generation. Defaults to None.
+    """
+
     def __init__(
         self,
         height: int,
@@ -11,6 +30,7 @@ class MazeGenerator():
         end: tuple[int, int] | None = None,
         seed: int | None = None
     ) -> None:
+        """Initialise and generate the maze."""
         self.height = height
         self.width = width
         self.start = start
@@ -41,7 +61,19 @@ class MazeGenerator():
                     )
 
     def get_grid(self) -> list[list[int]]:
+        """Return the maze grid.
+
+        Returns:
+            2D list where each integer encodes the walls of a cell
+            as bits: N=1, E=2, S=4, W=8. A set bit means the wall
+            is closed.
+        """
         return self.grid
 
     def get_path(self) -> list[tuple[int, int]]:
+        """Return the shortest path from entry to exit.
+
+        Returns:
+            List of (x, y) coordinates from start to end inclusive.
+        """
         return self.path

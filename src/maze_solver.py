@@ -8,6 +8,18 @@ def choices_to_go(
         height: int,
         width: int
         ) -> dict[str, tuple[int, int]]:
+    """Return accessible neighbours of a cell based on open walls.
+
+    Args:
+        grid: 2D list of integers encoding walls per cell.
+        x: Column index of the current cell.
+        y: Row index of the current cell.
+        height: Number of rows in the maze.
+        width: Number of columns in the maze.
+
+    Returns:
+        A dict mapping direction names to (x, y) neighbour coordinates.
+    """
 
     choices: dict[str, tuple[int, int]] = {}
 
@@ -33,6 +45,20 @@ def find_exit(
         start: tuple[int, int],
         end: tuple[int, int]
         ) -> tuple[list[tuple[int, int]], list[str]]:
+    """Find the shortest path from start to end using BFS.
+
+    Args:
+        grid: 2D list of integers encoding walls per cell.
+        width: Number of columns in the maze.
+        height: Number of rows in the maze.
+        start: (x, y) coordinates of the entry cell.
+        end: (x, y) coordinates of the exit cell.
+
+    Returns:
+        A tuple of:
+            - path: List of (x, y) coordinates from start to end.
+            - direction: List of direction characters ('N', 'E', 'S', 'W').
+    """
 
     queue: list[tuple[int, int]] = [start]
     came_from: dict[tuple[int, int], tuple[int, int] | None] = {start: None}

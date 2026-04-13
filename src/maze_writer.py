@@ -5,6 +5,19 @@ def write_maze(
     direction: list[str],
     filename: str
 ) -> None:
+    """Write the maze to a file in hexadecimal format.
+
+    Each cell is encoded as a single hex digit. After the grid,
+    an empty line is followed by the entry coordinates, exit
+    coordinates, and the shortest path as a sequence of N/E/S/W.
+
+    Args:
+        grid: 2D list of integers encoding walls per cell.
+        entry: (x, y) coordinates of the maze entry.
+        exit_pos: (x, y) coordinates of the maze exit.
+        direction: List of direction characters ('N', 'E', 'S', 'W').
+        filename: Path to the output file.
+    """
 
     with open(filename, "w") as f:
 
